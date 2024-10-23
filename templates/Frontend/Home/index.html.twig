@@ -4,5 +4,18 @@
 
 {% block body %}
     {% include "Layout/header.html.twig" %}
-    <p>tttt</p>
+    <div>
+        <a href="{{ path('app.login') }}">Connexion</a>
+        <a href="{{ path('app.register') }}">Inscription</a>
+        <a href="{{ path('app.donation') }}">Faire un don</a>
+    </div>
+    
+    <div>
+        {% if app.user %}
+            <a href="{{ path('app.logout') }}">Déconnexion</a>
+        {% endif %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('admin.dashboard.index') }}">Dashboard</a>
+        {% endif %}
+    </div>
 {% endblock %}

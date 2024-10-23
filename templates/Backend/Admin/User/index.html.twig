@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Côté Admin - Utilisateurs{% endblock %}
+
+{% block body %}
+    <a href="{{ path('admin.dashboard.index') }}">Dashboard</a>
+    <a href="{{ path('admin.user.create') }}">Créer un utilisateur</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Modifier</th>
+                <th>Supprimer</th> 
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.email }}</td>
+                <td>{{ user.firstName }}</td>
+                <td>{{ user.lastName }}</td>
+                <td><a href="{{ path('admin.user.edit', {'id': user.id}) }}">Modifier</a></td>
+                <td>
+                    <form method="post" action="{{ path('admin.user.delete', {'id': user.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');" style="display: inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                        <button type="submit">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td>Aucun utilisateur trouvé.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

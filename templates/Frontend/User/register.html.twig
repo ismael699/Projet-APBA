@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_widget(form.firstName) }}        
+        {{ form_widget(form.lastName) }}
+        {{ form_widget(form.email) }}
+        {{ form_widget(form.password.first) }}
+        {{ form_widget(form.password.second) }}
+        {{ form_widget(form.agreeTerms) }}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <button>S'inscrire</button>
+    {{ form_end(form) }}
+{% endblock %}

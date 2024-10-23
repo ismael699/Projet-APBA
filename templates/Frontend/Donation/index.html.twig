@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Donations{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app.home') }}">Retour accueil</a>
+
+    {{ form_start(form) }}
+        {{ form_widget(form.cause, {'id': 'cause-select'}) }} 
+        <button type="submit">Donner</button>
+    {{ form_end(form) }}
+
+    {% if cause %}
+        <p><span id="price-display">{{ price }}</span> EURO</p>
+    {% else %}
+        <p><span id="price-display">0</span> EURO</p>
+    {% endif %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const causeSelect = document.getElementById('cause-select');
+            const priceDisplay = document.getElementById('price-display');
+
+            causeSelect.addEventListener('change', function() {
+                const causeId = causeSelect.value;
+
+                if (causeId) {
+                    fetch(`/cause/${causeId}/price`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('La réponse du réseau n\'était pas correcte');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            priceDisplay.textContent = data.price; // Assurez-vous que cette clé est correcte
+                        })
+                        .catch(error => {
+                            console.error('Il y a eu un problème avec l\'opération de récupération:', error);
+                            priceDisplay.textContent = '0'; // Réinitialiser à 0 en cas d'erreur
+                        });
+                } else {
+                    priceDisplay.textContent = '0'; // Réinitialiser à 0 si aucune cause n'est sélectionnée
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

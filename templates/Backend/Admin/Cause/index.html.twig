@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Côté Admin - Causes{% endblock %}
+
+{% block body %}
+    <a href="{{ path('admin.dashboard.index') }}">Dashboard</a>
+    <a href="{{ path('admin.cause.create') }}">Créer une cause</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prix</th>
+                <th>Supprimer</th> 
+            </tr>
+        </thead>
+        <tbody>
+            {% for cause in causes %}
+            <tr>
+                <td>{{ cause.name }}</td>
+                <td>{{ cause.price }}</td>
+                <td>
+                    <form method="post" action="{{ path('admin.cause.delete', {'id': cause.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet cause ?');" style="display: inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cause.id) }}">
+                        <button type="submit">Supprimer</button>
+                    </form>
+                </td> 
+            </tr>
+            {% else %}
+            <tr>
+                <td>Aucune cause en ligne.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

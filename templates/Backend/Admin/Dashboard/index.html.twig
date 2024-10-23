@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Côté Admin - Dashboard{% endblock %}
+
+{% block body %}
+    <h1>Admin dashboard</h1>
+    <a href="{{ path('admin.user.index') }}">Utilisateurs</a>
+    <a href="{{ path('admin.cause.index') }}">Causes</a>
+{% endblock %}
